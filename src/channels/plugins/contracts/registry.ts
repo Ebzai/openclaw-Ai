@@ -14,7 +14,6 @@ import {
   discordThreadBindingTesting,
   createDiscordThreadBindingManager,
 } from "../../../plugin-sdk/discord.js";
-import { createFeishuThreadBindingManager } from "../../../plugin-sdk/feishu.js";
 import {
   listLineAccountIds,
   resolveDefaultLineAccountId,
@@ -757,60 +756,6 @@ const sessionBindingContractEntries: Record<
         channel: "discord",
         accountId: "default",
         conversationId: "channel:123456789012345678",
-      });
-    },
-  },
-  feishu: {
-    expectedCapabilities: {
-      adapterAvailable: true,
-      bindSupported: true,
-      unbindSupported: true,
-      placements: ["current"],
-    },
-    getCapabilities: () => {
-      createFeishuThreadBindingManager({ cfg: baseSessionBindingCfg, accountId: "default" });
-      return getSessionBindingService().getCapabilities({
-        channel: "feishu",
-        accountId: "default",
-      });
-    },
-    bindAndResolve: async () => {
-      createFeishuThreadBindingManager({ cfg: baseSessionBindingCfg, accountId: "default" });
-      const service = getSessionBindingService();
-      const binding = await service.bind({
-        targetSessionKey: "agent:codex:acp:binding:feishu:default:abc123",
-        targetKind: "session",
-        conversation: {
-          channel: "feishu",
-          accountId: "default",
-          conversationId: "oc_group_chat:topic:om_topic_root",
-          parentConversationId: "oc_group_chat",
-        },
-        placement: "current",
-        metadata: {
-          agentId: "codex",
-          label: "codex-main",
-        },
-      });
-      expectResolvedSessionBinding({
-        channel: "feishu",
-        accountId: "default",
-        conversationId: "oc_group_chat:topic:om_topic_root",
-        targetSessionKey: "agent:codex:acp:binding:feishu:default:abc123",
-      });
-      return binding;
-    },
-    unbindAndVerify: unbindAndExpectClearedSessionBinding,
-    cleanup: async () => {
-      const manager = createFeishuThreadBindingManager({
-        cfg: baseSessionBindingCfg,
-        accountId: "default",
-      });
-      manager.stop();
-      expectClearedSessionBinding({
-        channel: "feishu",
-        accountId: "default",
-        conversationId: "oc_group_chat:topic:om_topic_root",
       });
     },
   },

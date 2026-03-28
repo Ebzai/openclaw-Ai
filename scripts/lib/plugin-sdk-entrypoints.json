@@ -99,9 +99,7 @@
   "channel-policy",
   "channel-send-result",
   "channel-targets",
-  "feishu",
-  "feishu-conversation",
-  "feishu-setup",
+
   "file-lock",
   "fetch-runtime",
   "group-access",

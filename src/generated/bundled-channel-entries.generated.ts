@@ -4,8 +4,6 @@ import bluebubblesChannelEntry from "../../extensions/bluebubbles/index.js";
 import bluebubblesChannelSetupEntry from "../../extensions/bluebubbles/setup-entry.js";
 import discordChannelEntry from "../../extensions/discord/index.js";
 import discordChannelSetupEntry from "../../extensions/discord/setup-entry.js";
-import feishuChannelEntry from "../../extensions/feishu/index.js";
-import feishuChannelSetupEntry from "../../extensions/feishu/setup-entry.js";
 import imessageChannelEntry from "../../extensions/imessage/index.js";
 import imessageChannelSetupEntry from "../../extensions/imessage/setup-entry.js";
 import ircChannelEntry from "../../extensions/irc/index.js";
@@ -37,11 +35,6 @@ export const GENERATED_BUNDLED_CHANNEL_ENTRIES = [
     id: "discord",
     entry: discordChannelEntry,
     setupEntry: discordChannelSetupEntry,
-  },
-  {
-    id: "feishu",
-    entry: feishuChannelEntry,
-    setupEntry: feishuChannelSetupEntry,
   },
   {
     id: "imessage",

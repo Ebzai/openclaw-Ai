@@ -770,66 +770,7 @@ function collectZaloAssignments(params: {
   });
 }
 
-function collectFeishuAssignments(params: {
-  config: OpenClawConfig;
-  defaults: SecretDefaults | undefined;
-  context: ResolverContext;
-}): void {
-  const resolved = getChannelSurface(params.config, "feishu");
-  if (!resolved) {
-    return;
-  }
-  const { channel: feishu, surface } = resolved;
-  collectSimpleChannelFieldAssignments({
-    channelKey: "feishu",
-    field: "appSecret",
-    channel: feishu,
-    surface,
-    defaults: params.defaults,
-    context: params.context,
-    topInactiveReason: "no enabled account inherits this top-level Feishu appSecret.",
-    accountInactiveReason: "Feishu account is disabled.",
-  });
-  const baseConnectionMode =
-    normalizeSecretStringValue(feishu.connectionMode) === "webhook" ? "webhook" : "websocket";
-  const resolveAccountMode = (account: Record<string, unknown>) =>
-    hasOwnProperty(account, "connectionMode")
-      ? normalizeSecretStringValue(account.connectionMode)
-      : baseConnectionMode;
-  collectConditionalChannelFieldAssignments({
-    channelKey: "feishu",
-    field: "encryptKey",
-    channel: feishu,
-    surface,
-    defaults: params.defaults,
-    context: params.context,
-    topLevelActiveWithoutAccounts: baseConnectionMode === "webhook",
-    topLevelInheritedAccountActive: ({ account, enabled }) =>
-      enabled &&
-      !hasOwnProperty(account, "encryptKey") &&
-      resolveAccountMode(account) === "webhook",
-    accountActive: ({ account, enabled }) => enabled && resolveAccountMode(account) === "webhook",
-    topInactiveReason: "no enabled Feishu webhook-mode surface inherits this top-level encryptKey.",
-    accountInactiveReason: "Feishu account is disabled or not running in webhook mode.",
-  });
-  collectConditionalChannelFieldAssignments({
-    channelKey: "feishu",
-    field: "verificationToken",
-    channel: feishu,
-    surface,
-    defaults: params.defaults,
-    context: params.context,
-    topLevelActiveWithoutAccounts: baseConnectionMode === "webhook",
-    topLevelInheritedAccountActive: ({ account, enabled }) =>
-      enabled &&
-      !hasOwnProperty(account, "verificationToken") &&
-      resolveAccountMode(account) === "webhook",
-    accountActive: ({ account, enabled }) => enabled && resolveAccountMode(account) === "webhook",
-    topInactiveReason:
-      "no enabled Feishu webhook-mode surface inherits this top-level verificationToken.",
-    accountInactiveReason: "Feishu account is disabled or not running in webhook mode.",
-  });
-}
+
 
 function collectNextcloudTalkAssignments(params: {
   config: OpenClawConfig;
@@ -988,6 +929,5 @@ export function collectChannelConfigAssignments(params: {
   collectMatrixAssignments(params);
   collectMSTeamsAssignments(params);
   collectNextcloudTalkAssignments(params);
-  collectFeishuAssignments(params);
   collectZaloAssignments(params);
 }
