@@ -1,0 +1,14 @@
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.icns
+*.pkl
+*.pcm
+*.gif
+.serena/
+apps/ios/
+apps/macos/
+apps/android/
+docs/
+assets/
