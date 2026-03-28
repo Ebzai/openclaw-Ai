@@ -1,3 +1,11 @@
+---
+title: Openclaw Ai
+emoji: 🦀
+colorFrom: red
+colorTo: blue
+sdk: docker
+pinned: false
+---
 # 🦞 OpenClaw — Personal AI Assistant
 
 <p align="center">
