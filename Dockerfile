@@ -96,9 +96,11 @@ RUN pnpm ui:build
 
 # Prune dev dependencies and strip build-only metadata before copying
 # runtime assets into the final image.
+# Split into separate layers and cap Node heap to avoid silent OOM hangs
+# on resource-constrained builders (e.g. HF Spaces free tier).
 FROM build AS runtime-assets
-RUN CI=true pnpm prune --prod && \
-    find dist -type f \( -name '*.d.ts' -o -name '*.d.mts' -o -name '*.d.cts' -o -name '*.map' \) -delete
+RUN CI=true NODE_OPTIONS=--max-old-space-size=1024 pnpm prune --prod
+RUN find dist -type f \( -name '*.d.ts' -o -name '*.d.mts' -o -name '*.d.cts' -o -name '*.map' \) -delete
 
 # ── Runtime base images ─────────────────────────────────────────
 FROM ${OPENCLAW_NODE_BOOKWORM_IMAGE} AS base-default
